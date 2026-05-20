@@ -1,23 +1,23 @@
-//
-//  SpendTrackerApp.swift
-//  SpendTracker
-//
-//  Created by Harshal Sarode on 19/05/2026.
-//
-
 import SwiftUI
 import SwiftData
 
 @main
 struct SpendTrackerApp: App {
+
+    private let appGroupID = "group.com.yourname.spendtracker" // ← update this
+
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        guard let containerURL = FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: "group.com.harshal.spendtracker"),
+        // ↑ update this too
+        let config = ModelConfiguration(
+            url: containerURL.appendingPathComponent("transactions.store")
+        ) as ModelConfiguration? else {
+            fatalError("Could not set up App Group container")
+        }
 
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            return try ModelContainer(for: Transaction.self, configurations: config)
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }

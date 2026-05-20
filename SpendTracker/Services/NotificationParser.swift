@@ -28,6 +28,8 @@ struct NotificationParser {
     static func extractAmount(from text: String) -> Double? {
         let patterns = [
             #"(?:SAR|SR|ريال)\s*([\d,]+\.?\d*)"#,
+            #"(?:AED|ريال)\s*([\d,]+\.?\d*)"#,
+            #"(?:INR|ريال)\s*([\d,]+\.?\d*)"#,
             #"([\d,]+\.?\d*)\s*(?:SAR|SR|ريال)"#,
             #"(?:Amount|amount|AMOUNT)[:\s]+([\d,]+\.?\d*)"#,
             #"(?:debited|charged|spent)[^\d]*([\d,]+\.?\d*)"#
