@@ -177,7 +177,7 @@ struct DebugView: View {
             parseResult = """
             ✅ PARSED SUCCESSFULLY
             ──────────────────────
-            Amount:   SAR \(result.amount)
+            Amount:   \(result.currency) \(result.amount)
             Merchant: \(result.merchant)
             Category: \(result.category.rawValue)
             Date:     \(result.date.formatted(date: .abbreviated, time: .omitted))
@@ -292,7 +292,7 @@ struct TransactionDebugRow: View {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 2) {
-                Text("SAR \(transaction.amount, specifier: "%.2f")")
+                Text("\(transaction.currency) \(transaction.amount, specifier: "%.2f")")
                     .font(.subheadline)
                     .fontWeight(.semibold)
                 Text(transaction.date.formatted(date: .abbreviated, time: .omitted))
