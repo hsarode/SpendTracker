@@ -2,6 +2,7 @@ import Foundation
 
 struct ParsedTransaction {
     let amount: Double
+    let currency: String
     let merchant: String
     let date: Date
     let category: Category
@@ -12,16 +13,27 @@ struct NotificationParser {
     // MARK: - Main Entry Point
     static func parse(notificationBody: String) -> ParsedTransaction? {
         guard let amount = extractAmount(from: notificationBody) else { return nil }
+        let currency = extractCurrency(from: notificationBody)
         let merchant = extractMerchant(from: notificationBody)
         let date = extractDate(from: notificationBody) ?? .now
         let category = categorize(merchant: merchant, body: notificationBody)
 
         return ParsedTransaction(
             amount: amount,
+            currency: currency,
             merchant: merchant,
             date: date,
             category: category
         )
+    }
+    // MARK: - Currency Extraction
+    static func extractCurrency(from text: String) -> String {
+        // Order matters — check specific ones first
+        let currencies = ["AED", "SAR", "USD", "EUR", "GBP"]
+        for currency in currencies {
+            if text.contains(currency) { return currency }
+        }
+        return "XXX"
     }
 
     // MARK: - Amount Extraction
@@ -52,6 +64,7 @@ struct NotificationParser {
     // MARK: - Merchant Extraction
     static func extractMerchant(from text: String) -> String {
         let patterns = [
+            #"(?:at|AT|@)\s+([A-Z][A-Z0-9\s]{2,25}?)\s+(?:on|for|ON|FOR)\b"#,
             #"(?:at|AT|@)\s+([A-Z][A-Za-z0-9\s\*]{2,30}?)(?:\s+on|\s+for|\.|,|$)"#,
             #"(?:to|TO)\s+([A-Z][A-Za-z0-9\s]{2,30}?)(?:\s+on|\s+for|\.|,|$)"#,
             #"(?:merchant|Merchant)[:\s]+([A-Za-z0-9\s]{2,30}?)(?:\.|,|$)"#

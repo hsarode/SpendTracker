@@ -122,7 +122,8 @@ struct TransactionRow: View {
 
             // Amount + Source
             VStack(alignment: .trailing, spacing: 3) {
-                Text("SAR \(transaction.amount, specifier: "%.2f")")
+                // Replace the amount Text in TransactionRow
+                Text("\(transaction.currency) \(transaction.amount, specifier: "%.2f")")
                     .font(.subheadline)
                     .fontWeight(.bold)
                 Text(transaction.source.rawValue)

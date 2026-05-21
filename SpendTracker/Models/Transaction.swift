@@ -5,6 +5,7 @@ import Foundation
 final class Transaction {
     var id: UUID
     var amount: Double
+    var currency: String
     var merchant: String
     var category: Category
     var date: Date
@@ -13,6 +14,7 @@ final class Transaction {
 
     init(
         amount: Double,
+        currency: String,
         merchant: String,
         category: Category = .uncategorized,
         date: Date = .now,
@@ -21,6 +23,7 @@ final class Transaction {
     ) {
         self.id = UUID()
         self.amount = amount
+        self.currency = currency
         self.merchant = merchant
         self.category = category
         self.date = date
